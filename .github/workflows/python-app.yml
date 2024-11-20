@@ -1,0 +1,43 @@
+## we have to write key:value pairs
+name: Python CI # name of github action
+
+## Trigger the workflow on any push to the main branch or pull request
+## we can do Events --> push, pull, merge, delete
+## based on this Events --> we can Trigger workflow
+on: #to Trigger a Workflow you have to run it in (on:)
+## and inside this
+  push: # this Event
+    branches: # specifies branch on push system in git
+      - main # in main
+  
+  pull_request: # this Event do a pull for repo
+    - main # in main branch
+
+
+## create a Trigger-Workflow to run entier test-cases
+jobs:
+  test: # test-cases
+    run-on: ubuntu-latest # for docker-container use ubuntu
+
+    ## for every workflow steps we will define this steps below
+    steps:
+      ## Step 1: Check out the code from the repository
+      - name: Check out code # this name of block
+        uses: actions/checkout@v2 # this to call the action
+
+
+      ## Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2 ## this action used for create python environment
+        with:
+          python-version: '3.8' # the python version
+
+      ## Step 3: Install dependencies
+      - name: Install dependencies
+        run: # to run the command below
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      ## Step 4: Run tests
+      - name: Run tests
+        run: pytest ## it will define the test folder, and execute all test cases
